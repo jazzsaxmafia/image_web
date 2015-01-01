@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'image',
+	'news',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,4 +86,5 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
 	os.path.join(BASE_DIR, 'web', 'template'),
 	os.path.join(BASE_DIR, 'image', 'template'),
+	os.path.join(BASE_DIR, 'news', 'template'),
 )

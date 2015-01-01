@@ -4,22 +4,20 @@
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	</head>
 	<body>
-		<a href="/image"><h3>Image Search</h3></a>
-		<a href="/news"><h3>News Search</h3></a>
-		<!--
-		<form action="/get_query" method="get">
+		<form action="/get_news" method="get">
 			<h3> Enter your query: <input type="text" name="query" id="query"></input> </h3>
 			<input type="submit" value="OK">
-			<button class="submit_button">Go!</button>
+			<!--<button class="submit_button">Go!</button>-->
 		</form>
-		<h1> Helo~ </h1>
+		<h1> Hello~ </h1>
 		<div id="search_result">
 		
 			{% for item in data %}
-				<img src={{item.image}}>
+				<h3>{{item.title}}</h3>
+				<p> {{item.description}}</p>
+
 			{% endfor %}
 		</div>
-		-->
 	</body>
 	<script>
 		$(document).ready(function(){

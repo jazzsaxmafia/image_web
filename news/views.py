@@ -12,15 +12,15 @@ from bs4 import BeautifulSoup
 def home(request):
 	return render_to_response('home.html')
 
-def image(request):
-	return render_to_response('image.html')
+def news(request):
+	return render_to_response('news.html')
 
 def get_query(request):
 	query = request.GET.get('query').encode('utf-8')
 	print >> sys.stderr, query
 	key = '5d8f3e56c2afa7ad444d6b53feed0179' 
 	params = ['key', 'query', 'target', 'start', 'display']
-	params_val = [key, query, 'image', '1', '100']
+	params_val = [key, query, 'news', '1', '100']
 
 	url = 'http://openapi.naver.com/search?'
 	for i in range(len(params)):
@@ -36,14 +36,14 @@ def get_query(request):
 	for item in items:
 		title = item.title.getText
 		link = item.link.getText
-		image = item.thumbnail.getText
+		description = item.description.getText
 
-		print >> sys.stderr, image
+		print >> sys.stderr, description
 		
-		current_item = {'title':title, 'link':link, 'image':image}
+		current_item = {'title':title, 'link':link, 'description':description}
 		all_items.append(current_item)
 	
-	return render_to_response('image.html', {'data':all_items})
+	return render_to_response('news.html', {'data':all_items})
 #	return HttpResponse(json.dumps({'data':all_items}))
 
 	
