@@ -7,6 +7,7 @@ import json
 import sys 
 import os
 import urllib
+import searcher 
 from bs4 import BeautifulSoup
 # Create your views here.
 def home(request):
@@ -16,35 +17,29 @@ def image(request):
 	return render_to_response('image.html')
 
 def get_query(request):
+	
 	query = request.GET.get('query').encode('utf-8')
-	print >> sys.stderr, query
-	key = '5d8f3e56c2afa7ad444d6b53feed0179' 
-	params = ['key', 'query', 'target', 'start', 'display']
-	params_val = [key, query, 'image', '1', '100']
-
-	url = 'http://openapi.naver.com/search?'
-	for i in range(len(params)):
-		url += params[i] + '=' + params_val[i] + '&'
-		
-	data = urllib.urlopen(url[:-1]).read()
-
-	soup = BeautifulSoup(data)
-	items = soup.find_all('item')
 	
+	items_naver = searcher.get_naver(query, 'image')
+	items_daum = searcher.get_daum(query, 'image')
+	
+	all_items = items_naver + items_daum
+	return render_to_response('image.html', {'naver':items_naver, 'daum':items_daum})
+
+def socialpick_image_structure(row):
+	current_item = json.dumps({'keyword': row['keyword'], 'images': row['image_url']})
+	print current_item
+	return current_item
+
+def socialpick(request):
+	socialpick_path = "/home/ubuntu/web/socialpick"
+	today = searcher.get_today()
+
+	pickle_file = os.path.join(socialpick_path, 'data', 'socialpick', today)
+
+	socialpick_dataframe = pd.read_pickle(pickle_file)
+
 	all_items = []
-
-	for item in items:
-		title = item.title.getText
-		link = item.link.getText
-		image = item.thumbnail.getText
-
-		print >> sys.stderr, image
-		
-		current_item = {'title':title, 'link':link, 'image':image}
-		all_items.append(current_item)
-	
-	return render_to_response('image.html', {'data':all_items})
-#	return HttpResponse(json.dumps({'data':all_items}))
-
-	
-	
+	all_items = socialpick_dataframe.apply(lambda x: socialpick_image_structure(x), 1)
+	all_items = all_items.map(lambda x: json.loads(x))
+	return render_to_response('socialpick.html', {'data':all_items})

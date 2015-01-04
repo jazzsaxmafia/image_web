@@ -88,3 +88,4 @@ TEMPLATE_DIRS = (
 	os.path.join(BASE_DIR, 'image', 'template'),
 	os.path.join(BASE_DIR, 'news', 'template'),
 )
+

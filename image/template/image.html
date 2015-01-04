@@ -9,10 +9,14 @@
 			<input type="submit" value="OK">
 			<!--<button class="submit_button">Go!</button>-->
 		</form>
-		<h1> Hello~ </h1>
 		<div id="search_result">
 		
-			{% for item in data %}
+		<h1> Naver </h1>
+			{% for item in naver %}
+				<img src={{item.image}}>
+			{% endfor %}
+		<h1> Daum </h1>
+			{% for item in daum %}
 				<img src={{item.image}}>
 			{% endfor %}
 		</div>
